@@ -12541,11 +12541,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\MyApp\\MyApp.csproj",
+      "projectUniqueName": "C:\\MyApp\\VagrantCoreDemo\\MyApp.csproj",
       "projectName": "MyApp",
-      "projectPath": "C:\\MyApp\\MyApp.csproj",
+      "projectPath": "C:\\MyApp\\VagrantCoreDemo\\MyApp.csproj",
       "packagesPath": "C:\\Users\\levye\\.nuget\\packages\\",
-      "outputPath": "C:\\MyApp\\obj\\",
+      "outputPath": "C:\\MyApp\\VagrantCoreDemo\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
