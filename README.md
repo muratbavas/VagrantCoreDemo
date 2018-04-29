@@ -3,7 +3,7 @@ Vagrant Core Demo
 
 # Requirement list to get your Development Server Ready
 
-##Following steps will be applying to your Local Computer;
+## Following steps will be applying to your Local Computer;
 * Oracle VirtualBox Installation
 Install VirtualBox application to your local computer on the [Oracle VirtualBox web site](https://www.virtualbox.org/wiki/Downloads).
 
@@ -26,10 +26,10 @@ After see "Development Server is Ready" message in cmd then open VirtualBox serv
 
 Following steps will be applying to VirtualBox VM;
 
-## DotNet SDK Installation
+* DotNet SDK Installation
 Install dotnet-sdk application to VirtualBox VM on the [DotNet SDK (v2.1.105)](https://www.microsoft.com/net/download/thank-you/dotnet-sdk-2.1.105-windows-x64-installer).
 
-## Git Installation
+* Git Installation
 Install git application to to VirtualBox VM on the [Git web site](https://www.vagrantup.com/downloads.html).
 https://git-scm.com/downloads
 
