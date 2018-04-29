@@ -3,18 +3,18 @@ Vagrant Core Demo
 
 # Requirement list to get your Development Server Ready
 
-Following steps will be applying to your Local Computer;
-## Oracle VirtualBox Installation
-Install VirtualBox application to your local computer on the [Vagrant web site](https://www.vagrantup.com/downloads.html).
+##Following steps will be applying to your Local Computer;
+* Oracle VirtualBox Installation
+Install VirtualBox application to your local computer on the [Oracle VirtualBox web site](https://www.virtualbox.org/wiki/Downloads).
 
-## Vagrant Installation
+* Vagrant Installation
 Install Vagrant application to your local computer on the [Vagrant web site](https://www.vagrantup.com/downloads.html).
 
-## Git Installation
+* Git Installation
 Install git application to your local computer on the [Git web site](https://www.vagrantup.com/downloads.html).
 https://git-scm.com/downloads
 
-# Run the Vagrant
+## Run the Vagrant
 
 type the following commands in cmd on the same folder path with Vagrantfile path 
 ```
