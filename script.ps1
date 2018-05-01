@@ -81,13 +81,15 @@ dotnet run
 "@
 $exampleFile | Add-Content C:\MyApp\gitclone.bat
 
+## Start GitPull Batch File
+start-process "cmd.exe" "/c C:\MyApp\gitclone.bat"
+
 ## Create GitPull Batch file
 New-Item -Path 'C:\MyApp' -ItemType file -Name 'gitpull.bat' -Value `n
 $exampleFile = @"
 cd c:\MyApp\VagrantCoreDemo
 taskkill /IM dotnet.exe /T /F
 git pull
-start iexplore.exe http://Localhost:5000
 dotnet run
 "@
 $exampleFile | Add-Content C:\MyApp\gitpull.bat
