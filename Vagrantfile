@@ -15,17 +15,11 @@ Vagrant.configure("2") do |config|
     # Password to use WinRM
     config.winrm.password = "vagrant"
 
-    # Set VM network type
-    # config.vm.network "private_network"
-
     # Set VM hostname
     config.vm.hostname = "DevSrv01"
 
     # Execute external script
     config.vm.provision "shell", path: "script.ps1" 
-
-    # Copy file from host to VM  
-    config.vm.provision "file", source: "./script.ps1", destination: "c:\MyApp\script.ps1"
 
     # Seconds to wait during gracefull halt
     config.windows.halt_timeout = "120"
