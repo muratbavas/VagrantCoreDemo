@@ -1,22 +1,36 @@
-# -*- mode: ruby -*-
-# vi: set ft=ruby :
-
-# All Vagrant configuration is done below. The "2" in Vagrant.configure
-# configures the configuration version (we support older styles for
-# backwards compatibility). Please don't change it unless you know what
-# you're doing.
 Vagrant.configure("2") do |config|
 
-  # Every Vagrant development environment requires a box. You can search for
-  # boxes at https://vagrantcloud.com/search.
-  config.vm.box = "devopsgroup-io/windows_server-2012r2-standard-amd64-nocm"
+    # Box to create VM from
+    config.vm.box = "devopsgroup-io/windows_server-2012r2-standard-amd64-nocm"
 
-  # Set VM guest OS type
-  config.vm.guest = :windows
+    # Set VM guest OS type
+    config.vm.guest = :windows
+    
+    # Communicator type to use with guest VM
+    config.vm.communicator = "winrm"
+    
+    # Username to use WinRM
+    config.winrm.username = "vagrant"
+    
+    # Password to use WinRM
+    config.winrm.password = "vagrant"
 
-  # Execute external script
-  config.vm.provision "shell", path: "script.ps1" 
+    # Set VM network type
+    # config.vm.network "private_network"
 
-  # Message after vagrant up
-  config.vm.post_up_message = "Development Server is Ready"
+    # Set VM hostname
+    config.vm.hostname = "DevSrv01"
+
+    # Execute external script
+    config.vm.provision "shell", path: "script.ps1" 
+
+    # Copy file from host to VM  
+    config.vm.provision "file", source: "./script.ps1", destination: "c:\MyApp\script.ps1"
+
+    # Seconds to wait during gracefull halt
+    config.windows.halt_timeout = "120"
+
+    # Message after vagrant up
+    config.vm.post_up_message = "Development Server is Ready"
+
 end
