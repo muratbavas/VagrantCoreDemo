@@ -18,7 +18,7 @@ tzutil.exe /s "Turkey Standard Time"
 Mkdir C:/MyApp
 
 ## Go To C:\MyApp path on cmd
-cd "C:\MyApp"
+Set-Location "C:\MyApp"
 
 ## Set Tls version to 1.2
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]'Tls12'
@@ -66,36 +66,62 @@ Start-Process 'C:\MyApp\requestRouter_amd64.msi' '/qn' -PassThru | Wait-Process
 Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.webServer/proxy" -name "enabled" -value "True"
 
 ## Create URL Rewrite Rules
-Add-WebConfigurationProperty -PSPath 'IIS:\Sites\Default Web Site' -filter 'system.webServer/rewrite/rules' -name '.' -value @{name="TestRule1"; patterSyntax='Regular Expressions'; stopProcessing='True'};
-Set-WebConfigurationProperty -PSPath 'IIS:\Sites\Default Web Site' -filter "system.webServer/rewrite/rules/rule[@name='TestRule1']/match" -name 'url' -value '(.*)';
-Set-WebConfigurationProperty -pspath 'IIS:\Sites\Default Web Site' -filter '/system.webserver/rewrite/rules/rule[@name="TestRule1"]/action' -name . -value @{ type="Rewrite"; url='{C:1}://localhost:5000/{R:1}'};
-Add-WebConfigurationProperty -pspath 'IIS:\Sites\Default Web Site' -filter '/system.webserver/rewrite/rules/rule[@name="TestRule1"]/conditions' -name "." -value @{input="{CACHE_URL}"; pattern='^(https?)://'};
+# Add-WebConfigurationProperty -PSPath 'IIS:\Sites\Default Web Site' -filter 'system.webServer/rewrite/rules' -name '.' -value @{name="DotNetRule1"; patterSyntax='Regular Expressions'; stopProcessing='True'};
+# Set-WebConfigurationProperty -PSPath 'IIS:\Sites\Default Web Site' -filter "system.webServer/rewrite/rules/rule[@name='TestRule1']/match" -name 'url' -value "Localhost/*";
+# Set-WebConfigurationProperty -pspath 'IIS:\Sites\Default Web Site' -filter '/system.webserver/rewrite/rules/rule[@name="TestRule1"]/action' -name . -value @{ type="Rewrite"; url="http:/Localhost:5000/"};
+## Add-WebConfigurationProperty -pspath 'IIS:\Sites\Default Web Site' -filter '/system.webserver/rewrite/rules/rule[@name="TestRule1"]/conditions' -name "." -value @{input="{CACHE_URL}"; pattern='^(https?)://'};
 
-## Create GitPull Batch file
+## Create GitClone Batch file
 New-Item -Path 'C:\MyApp' -ItemType file -Name 'gitclone.bat' -Value `n
 $exampleFile = @"
 git clone https://github.com/muratbavas/VagrantCoreDemo.git c:\MyApp\VagrantCoreDemo
 cd c:\MyApp\VagrantCoreDemo
-start iexplore.exe http://Localhost:5000
-dotnet run
+dotnet restore
+dotnet watch run
 "@
 $exampleFile | Add-Content C:\MyApp\gitclone.bat
 
 ## Start GitPull Batch File
-start-process "cmd.exe" "/c C:\MyApp\gitclone.bat"
+#start-process "cmd.exe" "/c C:\MyApp\gitclone.bat"
 
 ## Create GitPull Batch file
 New-Item -Path 'C:\MyApp' -ItemType file -Name 'gitpull.bat' -Value `n
 $exampleFile = @"
 cd c:\MyApp\VagrantCoreDemo
-taskkill /IM dotnet.exe /T /F
 git pull
-dotnet run
 "@
 $exampleFile | Add-Content C:\MyApp\gitpull.bat
 
 ## Create DotNetCore WebPage URL shortcut on desktop
 $Shell = New-Object -ComObject ("WScript.Shell")
 $Favorite = $Shell.CreateShortcut($env:USERPROFILE + "\Desktop\CoreDotnetProject.url")
-$Favorite.TargetPath = "http://Localhost:5000";
+$Favorite.TargetPath = "http://Localhost";
 $Favorite.Save()
+
+## Create IIS Farm
+$farmName = 'DotNetCore'
+
+Add-WebConfigurationProperty -PSPath 'MACHINE/WEBROOT/APPHOST' `
+    -Filter 'webFarms' `
+    -Name '.'  `
+    -Value @{ name = $farmName; enabled = $true }
+
+Add-WebConfiguration -PSPath 'MACHINE/WEBROOT/APPHOST' `
+    -Filter "webFarms/webFarm[@name='$farmName']" `
+    -Value @(
+        @{ address = 'Localhost'; enabled = $true }
+    )
+
+Set-WebConfigurationProperty -PSPath 'MACHINE/WEBROOT/APPHOST' `
+    -Filter "webFarms/webFarm[@name='$farmName']/server[@address='Localhost']" `
+    -Name 'applicationRequestRouting' `
+    -Value @{ httpPort = 5000 }
+
+## Create IIS URLRewrite Rule
+$filterRoot = "system.webServer/rewrite/GlobalRules/rule[@name='ARR_DotNetCore_loadbalance$_']"
+Clear-WebConfiguration -pspath $site -filter $filterRoot
+Add-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.webserver/rewrite/GlobalRules" -name "." -value @{name='ARR_DotNetCore_loadbalance'; patternSyntax='Wildcard'; stopProcessing='True'}
+Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "$filterRoot/match" -name "url" -value "*"
+Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "$filterRoot/conditions" -name "logicalGrouping" -value "MatchAll"
+Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "$filterRoot/action" -name "type" -value "Rewrite"
+Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "$filterRoot/action" -name "url" -value "http://localhost/{R:0}"
