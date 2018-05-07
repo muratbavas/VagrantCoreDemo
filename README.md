@@ -33,7 +33,7 @@ vagrant up
 ## Following steps will be applying to VirtualBox VM;
 VirtualBox server needs internet connection to download and install automaticaly DotNet-SDK, Git and other dependence applications from internet.
 
-Clone Project from Git
+After all installation finished, Clone Project from Git using below script file. Download project and start "DotNet Watch Run" command automatically.
 ```
 C:\MyApp\gitclone.bat
 ```
