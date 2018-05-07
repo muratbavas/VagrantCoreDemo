@@ -81,7 +81,7 @@ dotnet watch run
 "@
 $exampleFile | Add-Content C:\MyApp\gitclone.bat
 
-## Start GitPull Batch File
+## Start GitClone Batch File
 #start-process "cmd.exe" "/c C:\MyApp\gitclone.bat"
 
 ## Create GitPull Batch file
