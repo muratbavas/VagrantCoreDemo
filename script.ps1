@@ -18,7 +18,7 @@ tzutil.exe /s "Turkey Standard Time"
 Mkdir C:/MyApp
 
 ## Go To C:\MyApp path on cmd
-cd "C:\MyApp"
+Set-Location "C:\MyApp"
 
 ## Set Tls version to 1.2
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]'Tls12'
