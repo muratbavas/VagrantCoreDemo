@@ -4,7 +4,7 @@
 .DESCRIPTION
   <Download all PreRequest application and component from Internet and Install automatically at first time.>
 .NOTES
-  Version:        1.3
+  Version:        1.4
   Author:         Murat Dogan Bavas
   Creation Date:  2018.04.28
   #>
@@ -18,7 +18,7 @@ tzutil.exe /s "Turkey Standard Time"
 Mkdir C:/MyApp
 
 ## Go To C:\MyApp path on cmd
-Set-Location "C:\MyApp"
+cd "C:\MyApp"
 
 ## Set Tls version to 1.2
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]'Tls12'
@@ -124,4 +124,4 @@ Add-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.w
 Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "$filterRoot/match" -name "url" -value "*"
 Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "$filterRoot/conditions" -name "logicalGrouping" -value "MatchAll"
 Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "$filterRoot/action" -name "type" -value "Rewrite"
-Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "$filterRoot/action" -name "url" -value "http://localhost/{R:0}"
+Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "$filterRoot/action" -name "url" -value "http://DotNetCore/{R:0}"
